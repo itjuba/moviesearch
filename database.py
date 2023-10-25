@@ -7,8 +7,7 @@ metadata = sqlalchemy.MetaData()
 
 
 engine = sqlalchemy.create_engine(
-    DATABASE_URL,
-)
+    DATABASE_URL,)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

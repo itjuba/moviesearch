@@ -3,26 +3,27 @@ version: '3.8'
 services:
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15-alpine  # Use the official PostgreSQL 15 image
     volumes:
-      - ./custom-data-directory:/var/lib/postgresql/data
-      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./custom-data-directory:/var/lib/postgresql/data  # Mount a custom data directory for the PostgreSQL database
+      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount an initialization script
     expose:
-      - 5432
+      - 5432  # Expose PostgreSQL port
     env_file:
       - .env  # Use the .env file for environment variables
 
-
   web:
-    build: .
+    build: .  # Build the Docker image from the current directory
     command: [ "bash", "-c", "while !</dev/tcp/db/5432; do sleep 1; done; uvicorn main:app --host 0.0.0.0" ]
+      # Start the web application after ensuring the PostgreSQL database is ready
     volumes:
-      - .:/app
+      - .:/app  # Mount the current directory to /app in the container
     ports:
-      - 8008:8000
+      - 8008:8000  # Map host port 8008 to container port 8000
     env_file:
       - .env  # Use the .env file for environment variables
     depends_on:
-      - db
+      - db  # Ensure the 'db' service is started before 'web' service
+
 volumes:
   postgres_data:
