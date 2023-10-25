@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - ./custom-data-directory:/var/lib/postgresql/data
+      - ./init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    expose:
+      - 5432
+    env_file:
+      - .env  # Use the .env file for environment variables
+
+
+  web:
+    build: .
+    command: [ "bash", "-c", "while !</dev/tcp/db/5432; do sleep 1; done; uvicorn main:app --host 0.0.0.0" ]
+    volumes:
+      - .:/app
+    ports:
+      - 8008:8000
+    env_file:
+      - .env  # Use the .env file for environment variables
+    depends_on:
+      - db
+volumes:
+  postgres_data:
