@@ -31,6 +31,10 @@ The user can register and obtain an access token, allowing them to interact with
 
 *   Adding Unit Tests: Enhancing the codebase with comprehensive unit tests to ensure the reliability and stability of the service.
 
+*   Email validation 
+
+
+
 ## AI Tools Utilization
 
     AI Tools: I used ChatGPT for code generation, optimization, commenting, and documentation processes.
